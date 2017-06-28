@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<form role="form" action="/create" method=post>
+    <dl>
+      <dt>Number of instances to be created?
+      <dd><input type=number min=1 name=ec2 value="{{
+          request.form.ec2 }}">
+      <dt>Name of the instance
+      <dd><input type=text name=name value="{{ request.form.name }}">
+    </dl>
+    <p><input type=submit value=Create></p>
+</form>
+
+</body>
+</html>

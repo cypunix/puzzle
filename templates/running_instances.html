@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body>
+<p> Welcome {{group}} </p>
+
+
+<p> Display the list of running EC2s </p>
+
+<div>
+<ul>
+{% for obj in filename  %}
+    <li>{{ obj[0] }} : {{obj[1]}} </li>
+{% endfor  %}
+</ul>
+</div>
+
+<p> Delete all the instances created by this application? </p>
+  <p><input type=submit value=Delete></p>
+
+
+</body>
+</html>
