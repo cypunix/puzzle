@@ -38,20 +38,19 @@ def create():
 #run the instances:
 
 	client = boto3.client('ec2',region_name="ap-southeast-2")
-#	instances = client.run_instances(
-#            ImageId='ami-a18392c2', 
-#            MinCount=ec2_number,
-#            MaxCount=ec2_number,
-#            InstanceType="t2.micro",
-#            TagSpecifications=[{'ResourceType':'instance','Tags':[{'Key':'Name','Value':name},{'Key':'uuid','Value':'666'}]} ]
-#					)
-#
+	instances = client.run_instances(
+            ImageId='ami-a18392c2', 
+            MinCount=ec2_number,
+            MaxCount=ec2_number,
+            InstanceType="t2.micro",
+            TagSpecifications=[{'ResourceType':'instance','Tags':[{'Key':'Name','Value':name},{'Key':'uuid','Value':'666'}]} ]	)
+    
 	response = client.describe_instances(Filters=[{'Name':'tag-key', 'Values':[name]}]
 	)
 #fetch instances run by the webapp with the tag-key value 'Name' - I could've taken a less common name but...
 	ec2 = boto3.resource('ec2', region_name="ap-southeast-2")
 	running_instances = ec2.instances.filter(
-            Filters=[{'Name': 'instance-state-name', 'Values': ['running']},{'Name':'tag-key', 'Values':['Name']},{'Name':'tag-value', 'Values':[name]}])
+            Filters=[{'Name':'tag-key', 'Values':['Name']},{'Name':'tag-value', 'Values':[name]}])
 	ec2info = defaultdict()
 	for instance in running_instances:
             for tag in instance.tags:
@@ -60,10 +59,7 @@ def create():
 	    # Add instance info to a dictionary         
 	    ec2info[instance.id] = {
 	        'ID': instance.instance_id,
-	        'State': instance.state['Name'],
-	        'Private IP': instance.private_ip_address,
 	        'Public IP': instance.public_ip_address,
-	        'Launch Time': instance.launch_time,
 		'ImageId': instance.image_id
 	        }
 	
@@ -71,20 +67,27 @@ def create():
 	    all_ec2=[]
 	    for instance_id, instance in ec2info.items():
 	        for key in attributes:
-	            print("{0}: {1}".format(key, instance[key]))
+#	            print("{0}: {1}".format(key, instance[key]))
 		    all_ec2.append((key, instance[key]))
             all_ec2.append((ec2_number,is_prime(int(ec2_number))))
-	    return render_template('running_instances.html',filename=all_ec2,group=name)
+	return render_template('running_instances.html',filename=all_ec2,group=name)
 
 @app.route('/delete', methods=['GET','POST'])
 def delete_click():
     
     if request.method == 'POST':
-        group = request.form['group']
+        #group = request.form['group']
+        del_list=[]
+        tag="uuid"
+        group="666"
         ec2 = boto3.resource('ec2')
         running_instances = ec2.instances.filter(
-        Filters=[{'Name': 'instance-state-name', 'Values': ['running']},{'Name':'tag-key', 'Values':[group]             }])
-
+        Filters=[{'Name':'tag-key', 'Values':[tag]},{'Name':'tag-value', 'Values':[group]}])
+        for instance in running_instances:
+             del_list.append(instance.id)
+	client = boto3.client('ec2',region_name="ap-southeast-2")
+        ec2.instances.filter(InstanceIds=del_list).terminate()
+        print "deleted " , del_list
     	    # Add instance info to a dictionary         
 	return render_template('delete.html')
 
