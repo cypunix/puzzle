@@ -14,8 +14,14 @@
 </ul>
 </div>
 
-<p> Delete all the instances created by this application? </p>
-  <p><input type=submit value=Delete></p>
+<form role="form" action="/delete" method=post>
+    <dl>
+    <p> Delete all the instances created by this application? </p>
+      <dd><input type=hidden name=group value="{{ group }}">
+    </dl>
+    <p><input type=submit value=Delete></p>
+</form>
+
 
 
 </body>
