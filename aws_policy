@@ -1,0 +1,35 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "ThisActionSupportsResourceLevelPermissionsWithAMIsAndTags",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeInstances",
+                "ec2:RunInstances",
+                "ec2:CreateTags",
+                "tag:*"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Action": [
+                "ec2:StartInstances",
+                "ec2:StopInstances",
+                "ec2:RebootInstances",
+                "ec2:TerminateInstances"
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "ec2:ResourceTag/uuid": "666"
+                }
+            },
+            "Resource": [
+                "*"
+            ],
+            "Effect": "Allow"
+        }
+    ]
+}
