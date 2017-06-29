@@ -30,7 +30,7 @@ docker run -it --rm --name webapp -p 80:5000 -e AWS_ACCESS_KEY_ID=abc -e AWS_SEC
 <p>Run a test run on different port with debugging on</p>
 docker run -it --rm --name webapp -p 80:4444 -e AWS_ACCESS_KEY_ID=abc -e AWS_SECRET_ACCESS_KEY=xyz {tag_of_image} python finalcode.py --test
 
-<p>The keys that needs to be fetched from AWS</p>
+Description:
 
 AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are the keys acquired from AWS newly created user.
 
