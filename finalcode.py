@@ -87,7 +87,7 @@ def delete_click():
 #hardcoded uuid to delete all instances created by the web_app -applied  AWS policy is used as an additional security layer
         tag="uuid"
         group="666"
-        ec2 = boto3.resource('ec2')
+        ec2 = boto3.resource('ec2', region_name="ap-southeast-2")
 #filter ec2 created by the app
         running_instances = ec2.instances.filter(
         Filters=[{'Name':'tag-key', 'Values':[tag]},{'Name':'tag-value', 'Values':[group]}])
