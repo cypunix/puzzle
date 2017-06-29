@@ -25,6 +25,7 @@ docker build -t {tag_of_image} .
 
 Run the docker image:
 docker run -it --rm --name webapp -p 80:5000 -e AWS_ACCESS_KEY_ID=abc -e AWS_SECRET_ACCESS_KEY=xyz {tag_of_image} python finalcode.py
+
 Run a test run on different port with debugging on
 docker run -it --rm --name webapp -p 80:4444 -e AWS_ACCESS_KEY_ID=abc -e AWS_SECRET_ACCESS_KEY=xyz {tag_of_image} python finalcode.py --test
 
